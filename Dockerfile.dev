@@ -1,0 +1,16 @@
+FROM node:alpine
+
+# declare working dir for this container (dir our files will be copied into)
+# within the container
+WORKDIR '/app'
+
+# copy in the dependency registry
+COPY package.json .
+# install dependencies
+RUN npm install
+# copy our project files in to the container
+# if you are using docker compose with volume mounting this is not needed
+# otherwise, you will want to keep this command
+COPY . .
+# start them
+CMD ["npm", "run", "start"]

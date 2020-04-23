@@ -1,0 +1,32 @@
+version: '3'
+services:
+  # if the container exits with 0 immediately run with docker-compose up --build
+  web:
+    # fix issue where docker container exits with 0 immediately
+    stdin_open: true
+    # may be required if windows is not detecting file changes in the react app
+    #environment:
+    #  - CHOKIDAR_USEPOLLING=true
+    build: 
+      # specify the directory in which our Dockerfile will exist
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      # map curr dir to the /app dir inside the container
+      - .:/app
+  tests:
+    # fix issue where docker container exits with 0 immediately
+    stdin_open: true
+    build: 
+      # specify the directory in which our Dockerfile will exist
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      # map curr dir to the /app dir inside the container
+      - .:/app
+    # overwrite the starting command defined in the Dockerfile.dev
+    command: ["npm", "run", "test"]

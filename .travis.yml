@@ -1,0 +1,21 @@
+sudo: required
+# list required services
+services:
+  - docker
+
+# steps to execute before our tests are ran (i.e. setup)
+before_install:
+  # the tagged images are scoped to this travis instance, it could be anything
+  - docker build -t codihuston/docker-react -f Dockerfile.dev .
+
+# contains all of the commands to run our test suite
+# the CI=true env variable will prevent the Jest watcher from prompting input
+# see: https://create-react-app.dev/docs/running-tests/
+script:
+  # the first set of dashes tells the OS that --coverage is not an argument
+  # to npm, but instead an argument to the `test` command...
+  - docker run -e CI=true codihuston/docker-react npm run test -- --coverage
+
+# enables language support
+# see: https://docs.travis-ci.com/user/languages/minimal-and-generic/
+language: generic

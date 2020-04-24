@@ -1,5 +1,5 @@
 # BUILD PHASE
-FROM node:alpine as builder
+FROM node:alpine
 WORKDIR '/app'
 COPY package.json .
 RUN npm install
@@ -19,6 +19,6 @@ EXPOSE 80
 # copy from build phase, the directory from that container, and the output dir
 # this dest dir is specified in nginx dockerhub documentation
 # see: https://hub.docker.com/_/nginx - Hosting some simple static content
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=0 /app/build /usr/share/nginx/html
 # we don't have to "run" nginx, as this container is designed to do that 
 # automatically

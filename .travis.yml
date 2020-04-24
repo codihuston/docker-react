@@ -16,6 +16,33 @@ script:
   # to npm, but instead an argument to the `test` command...
   - docker run -e CI=true codihuston/docker-react npm run test -- --coverage
 
+deploy:
+  # travis comes preconfigured to deploy to providers like aws, digital oc., etc.
+  provider: elasticbeanstalk
+  # depends on where the ebs instance was created
+  # check the ebs URL: http://dockerreact-env.eba-s6gcaar9.us-east-2.elasticbeanstalk.com/
+  region: us-east-2
+  # the name is the of the ebs app name
+  app: docker-react
+  # the env is the last part of that
+  env: "DockerReact-env"
+  # when travis deploys, it will take repo files, zip, and copy to an s3 bucket
+  # travis then tells ebs to use these files to re-deploy the application
+  # our aws ebs app automatically has an s3 instance associated with it
+  # find it by navigating to s3 bucket
+  # https://s3.console.aws.amazon.com/s3/home?region=us-east-2#
+  bucket_name: "elasticbeanstalk-us-east-2-072617488360"
+  # path is exactly equal to the bucket name; you will not see a pre-existing
+  # folder named after this app in this bucket at the start
+  bucket_path: "docker-react"
+  # only deploy when we push to master
+  on:
+    branch: master
+  # first, add the key value pairs in travis dashboard settings with matching 
+  # key names (quotes may be optional)
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+
 # enables language support
 # see: https://docs.travis-ci.com/user/languages/minimal-and-generic/
 language: generic

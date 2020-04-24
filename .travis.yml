@@ -39,7 +39,7 @@ deploy:
   on:
     branch: master
   # first, add the key value pairs in travis dashboard settings with matching 
-  # key names (quotes may be optional)
+  # key names (quotes may be optional) 
   access_key_id: "$AWS_ACCESS_KEY"
   secret_access_key: "$AWS_SECRET_KEY"
 
